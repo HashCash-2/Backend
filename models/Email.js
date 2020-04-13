@@ -24,14 +24,24 @@ text:{
 html:{
     type: String
 },
-hashKey:{
+streamId:{
     type: String,
     required: true,
 },
 date:{
     type:Date,
     default:Date.now
+},
+expiryDate:{
+    type:Date
+},
+amount:{
+    type:Number
+},
+tokens:{
+    type:[String]
 }
+
 });
 
 module.exports = Email = mongoose.model('email',EmailSchema);

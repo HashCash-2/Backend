@@ -18,8 +18,8 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
         to: req.body.receiver_email,
         from: req.user.email,
         subject: req.body.subject,
-        text: req.body.text,
-        html: req.body.html + req.body.hashKey 
+        text: req.body.text + req.body.amount + req.body.expiryDate,
+        html: req.body.html + req.body.streamId + req.body.amount
     }
 
     const emssg = {
@@ -29,7 +29,10 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
         subject: req.body.subject,
         text: req.body.text,
         html:req.body.html,
-        hashKey:req.body.hashKey
+        streamId:req.body.streamId,
+        expiryDate:req.body.expiryDate,
+        amount:req.body.amount,
+        tokens:req.body.tokens
     }
 
     // console.log(mssg);

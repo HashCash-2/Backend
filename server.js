@@ -6,6 +6,7 @@ var cors = require('cors')
 const user = require('./routes/user');
 
 const email = require('./routes/email');
+const token = require('./routes/tokens');
 
 
 const passport = require('passport');
@@ -41,7 +42,7 @@ res.send("check !!");
 
 app.use("/api/email", email);
 app.use("/user", user);
-
+app.use("/api/token",token)
 
 const port = process.env.PORT||5000;
 app.listen(port , (err) =>{
