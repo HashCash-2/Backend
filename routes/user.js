@@ -24,7 +24,7 @@ router.post('/register', (req,res)=>{
     User.findOne({ email: req.body.email })
     .then(user =>{
         if(user){
-            res.send(400).json({email:'email already exists'});
+            res.json({email:'email already exists'});
         }else{
 
                 const newuser = new User({
@@ -39,21 +39,25 @@ router.post('/register', (req,res)=>{
 
                         newuser.save().
                         then(user => { 
-                            // var email = {
-                            //     to: req.body.email,
-                            //     from: 'vanshkapoorvk7@gmail.com',
-                            //     subject: 'successfully signed up to Journal',
-                            //     html: '<h1>Hiii!!  Thankyou for registering to Journal</h1> <p> <br/> ~by <strong>Vansh</strong></p>'
-                            // };                             
-                            // mailer.sendMail(email);
+                            var email = {
+                                to: req.body.email,
+                                from: 'vanshkapoorvk7@gmail.com',
+                                subject: 'successfully signed up to HashCash',
+                                html: '<h1>Hiii!!  Thankyou for registering to HashCash</h1> <p> <br/> </p>'
+                            };                             
+                            mailer.sendMail(email);
 
-                            res.json(user);
+                            res.json({message:"success",user:user});
                          })
-                        .catch(err =>{console.log(err)})
+                        .catch(err =>{
+                            res.send(400).json({message:"error"})
+                        })
                     
                     })
                 })
         }
+    }).catch(error => {
+         res.json({message:'error',error:error})
     })
 });
 

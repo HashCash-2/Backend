@@ -39,7 +39,7 @@ res.send("check !!");
 });
 
 app.use("/api/email", email);
-// app.use("/user", user);
+app.use("/user", user);
 
 
 const port = process.env.PORT||5000;
