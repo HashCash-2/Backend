@@ -2,6 +2,7 @@ var express    = require('express');
 var mongoose   = require('mongoose');
 var bodyParser = require('body-parser');
 var database = require("./config/keys").mongoURI;
+var cors = require('cors')
 const user = require('./routes/user');
 
 const email = require('./routes/email');
@@ -10,7 +11,7 @@ const email = require('./routes/email');
 const passport = require('passport');
 
 var app        = express();
-
+app.use(cors())
 //api routes
 
 

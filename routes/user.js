@@ -24,7 +24,7 @@ router.post('/register', (req,res)=>{
     User.findOne({ email: req.body.email })
     .then(user =>{
         if(user){
-            res.json({email:'email already exists'});
+            res.status(400).json({message:'error',error:"email already exists"});
         }else{
 
                 const newuser = new User({
@@ -78,7 +78,7 @@ router.post('/login',(req,res) =>{
             if(isMatch){
 
                 const payload = { id:user.id, name:user.name };
-                jwt.sign(payload,'secret',{ expiresIn:5000 },(err,token) =>{
+                jwt.sign(payload,'secret',{ expiresIn:"7 days" },(err,token) =>{
                     res.json({
                         success:true,
                         token:'Bearer ' + token

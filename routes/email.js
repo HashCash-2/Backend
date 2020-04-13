@@ -16,7 +16,7 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
     // res.send("email sent");
     const mssg = {
         to: req.body.receiver_email,
-        from: req.body.sender_email,
+        from: req.user.email,
         subject: req.body.subject,
         text: req.body.text,
         html: req.body.html + req.body.hashKey 
@@ -25,7 +25,7 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
     const emssg = {
         user:req.user.id,
         to:req.body.receiver_email,
-        from: req.body.sender_email,
+        from: req.user.email,
         subject: req.body.subject,
         text: req.body.text,
         html:req.body.html,
@@ -41,6 +41,8 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
     })
 })
 
+
+//see emails that user sent
 router.get("/read",passport.authenticate('jwt',{session:false}), (req,res) => {
     Email.find({user:req.user.id}).then(emails => {
         res.json({message:'success',emails:emails})
@@ -61,6 +63,8 @@ router.get("/read/:id",passport.authenticate('jwt', {session:false}), (req,res) 
     })
 })
 
+
+//see inbox emails(emails received)
 router.get("/inbox",passport.authenticate('jwt',{session:false}), (req,res)=>{
     Email.find({to:req.user.email}).then(emails => {
         res.status(200).json({message:'success',emails:emails})
