@@ -58,6 +58,18 @@ router.get("/user/:id",passport.authenticate('jwt',{session:false}), (req,res) =
     }).catch(err => res.json({message:"error"}))
 })
 
+router.get("/user",passport.authenticate('jwt',{session:false}), (req,res) => {
+    Ptoken.findOne({email:req.user.email}).then(data => {
+        if(data == null)
+        {
+            return res.status(200).json({message:"Not accepting any tokens currently"});
+        }else{
+            return res.status(200).json({message:"success",data:data});
+        }
+    }).catch(err => res.json({message:"error"}))
+})
+
+
 
 
 router.post("/user",passport.authenticate('jwt',{session:false}),(req,res) => {

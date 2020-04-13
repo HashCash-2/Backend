@@ -5,10 +5,12 @@ const ProfileTokenSchema = new Schema({
     email:{
         type:String,
     },
-    tokens:{
-        type:[String],
-    }
-    
-
+    tokens:[
+        {
+            name:String,
+            address:String
+        },
+    ]
 })
+
 module.exports = Ptoken = mongoose.model('ptoken',ProfileTokenSchema)
