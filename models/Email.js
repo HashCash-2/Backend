@@ -39,7 +39,10 @@ amount:{
     type:Number
 },
 tokens:{
-    type:[String]
+    type:String
+},
+rate:{
+    type:Number
 }
 
 });
