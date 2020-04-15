@@ -74,7 +74,7 @@ router.get("/inbox",passport.authenticate('jwt',{session:false}), (req,res)=>{
 
     let check={
         to:req.user.email,
-        expiryDate: { $lt: myDate}
+        expiryDate: { $gt: myDate}
     }
 
     // 2020-04-15T20:45:17.695Z
