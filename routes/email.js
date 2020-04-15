@@ -70,8 +70,17 @@ router.get("/read/:id",passport.authenticate('jwt', {session:false}), (req,res) 
 
 //see inbox emails(emails received)
 router.get("/inbox",passport.authenticate('jwt',{session:false}), (req,res)=>{
-    Email.find({to:req.user.email}).then(emails => {
-        res.status(200).json({message:'success',emails:emails})
+    var myDate = new Date();
+
+    let check={
+        to:req.user.email,
+        expiryDate: { $lt: myDate}
+    }
+
+    // 2020-04-15T20:45:17.695Z
+    Email.find(check).then(emails => {
+        // var myDate = new Date().getTime()/1000;
+        res.status(200).json({message:'success',emails:emails,date:myDate})
     }).catch(error => {
         res.status(400).json({message:"error",error:error})
     })
