@@ -41,7 +41,7 @@ amount:{
 tokens:{
     type:String
 },
-tokename:{
+tokenname:{
     type:String
 },
 rate:{

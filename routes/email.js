@@ -18,7 +18,7 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
         to: req.body.receiver_email,
         from: req.user.email,
         subject: req.body.subject,
-        html: req.body.text + " " + req.body.amount + " " + req.body.expiryDate + " " + req.body.tokenName + " " + req.body.tokens,
+        html: req.body.text + " " + req.body.amount + " " + req.body.expiryDate + " " + req.body.tokenname + " " + req.body.tokens,
         text: req.body.html + req.body.streamId + req.body.amount
     }
 
@@ -33,10 +33,11 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
         expiryDate:req.body.expiryDate,
         amount:req.body.amount,
         tokens:req.body.tokens,
-        tokenName:req.body.tokenName
+        tokenname:req.body.tokenname
     }
 
-    // console.log(mssg);
+    // console.log(emssg);
+
     new Email(emssg).save().then(email => {
         utility.mail(mssg);
         // return res.status(200).json({message:'message is sent'});
@@ -73,14 +74,19 @@ router.get("/inbox",passport.authenticate('jwt',{session:false}), (req,res)=>{
     var myDate = new Date();
 
     let check={
-        to:req.user.email,
-        expiryDate: { $gt: myDate}
+        to:req.user.email       
+        
     }
 
+    // $or:[
+    //     {   to:req.user.email,
+    //     }
+    // ]
+    // { $or: [ { quantity: { $lt: 20 } }, { price: 10 } ] }
     // 2020-04-15T20:45:17.695Z
     Email.find(check).then(emails => {
         // var myDate = new Date().getTime()/1000;
-        res.status(200).json({message:'success',emails:emails,date:myDate})
+        res.status(200).json({message:'success',emails:emails})
     }).catch(error => {
         res.status(400).json({message:"error",error:error})
     })
