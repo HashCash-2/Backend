@@ -42,7 +42,8 @@ tokens:{
     type:String
 },
 tokenname:{
-    type:String
+    type:String,
+    // required:true
 },
 rate:{
     type:Number

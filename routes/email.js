@@ -37,7 +37,6 @@ router.post("/send",passport.authenticate('jwt',{session:false}), (req,res) => {
     }
 
     // console.log(emssg);
-
     new Email(emssg).save().then(email => {
         utility.mail(mssg);
         // return res.status(200).json({message:'message is sent'});
@@ -74,15 +73,11 @@ router.get("/inbox",passport.authenticate('jwt',{session:false}), (req,res)=>{
     var myDate = new Date();
 
     let check={
-        to:req.user.email       
-        
+        to:req.user.email,
+        // expiryDate: { $gt: myDate}
     }
+    // let emails=[]
 
-    // $or:[
-    //     {   to:req.user.email,
-    //     }
-    // ]
-    // { $or: [ { quantity: { $lt: 20 } }, { price: 10 } ] }
     // 2020-04-15T20:45:17.695Z
     Email.find(check).then(emails => {
         // var myDate = new Date().getTime()/1000;
