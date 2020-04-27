@@ -7,24 +7,24 @@ const passport = require('passport');
 const nodemailer = require('nodemailer');
 var Transport = require('nodemailer-sendgrid-transport');
 
-var options = {
-    auth: {
-        api_key: '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'
-    }
-}
 
-const mailer = nodemailer.createTransport(Transport(options));
 
 //@route /user/
+//desc check
 router.get('/',(req,res)=>{
     res.send("user");
 })
 
+
+
+//@route /user/register  POST
+//access public
+//desc register user
 router.post('/register', (req,res)=>{
     User.findOne({ email: req.body.email })
     .then(user =>{
         if(user){
-            res.status(400).json({message:'error',error:"email already exists"});
+            res.status(409).json({message:'error',error:"email already exists"});
         }else{
 
                 const newuser = new User({
@@ -39,15 +39,9 @@ router.post('/register', (req,res)=>{
 
                         newuser.save().
                         then(user => { 
-                            var email = {
-                                to: req.body.email,
-                                from: 'vanshkapoorvk7@gmail.com',
-                                subject: 'successfully signed up to HashCash',
-                                html: '<h1>Hiii!!  Thankyou for registering to HashCash</h1> <p> <br/> </p>'
-                            };                             
-                            mailer.sendMail(email);
+                          
 
-                            res.json({message:"success",user:user});
+                            res.status(201).json({success:true,user:user});
                          })
                         .catch(err =>{
                             res.send(400).json({message:"error"})
@@ -57,12 +51,15 @@ router.post('/register', (req,res)=>{
                 })
         }
     }).catch(error => {
-         res.json({message:'error',error:error})
+         res.status(400).json({message:'error',error:error})
     })
 });
 
 
-//@route /user/login
+
+//@route /user/login POST
+//access public
+//desc login user
 router.post('/login',(req,res) =>{
     const email = req.body.email;
     const password = req.body.password;
@@ -79,14 +76,11 @@ router.post('/login',(req,res) =>{
 
                 const payload = { id:user.id, name:user.name };
                 jwt.sign(payload,'secret',{ expiresIn:"7 days" },(err,token) =>{
-                    res.json({
+                    res.status(200).json({
                         success:true,
                         token:'Bearer ' + token
                     });
                 });
-
-
-                //res.json({mssg:'success'});
             }else{
                 res.status(400).json({password:'password incorrect'});
             }
@@ -94,24 +88,30 @@ router.post('/login',(req,res) =>{
     })
 })
 
+
+
 //@route /user/current
+//access private
+//desc get current user
 router.get('/current',passport.authenticate('jwt',{ session:false }),(req,res) => {
         res.json({usr : req.user});
 });
 
+
+
 //@route /user/all
 //access public
 //desc lists all users
-router.get('/all',(req,res)=>{
-    User.find()
-    .then(users => {
-        if(!users){
-            res.status(404).json({error:'no user'});
-        }
-        res.json(users);
-    })
-    .catch(err => res.status(400).json({error:'no users found'}));
-})
+// router.get('/all',(req,res)=>{
+//     User.find()
+//     .then(users => {
+//         if(!users){
+//             res.status(404).json({error:'no user'});
+//         }
+//         res.json(users);
+//     })
+//     .catch(err => res.status(400).json({error:'no users found'}));
+// })
 
 
 module.exports = router;
